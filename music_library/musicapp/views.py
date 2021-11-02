@@ -16,3 +16,11 @@ class SongList(APIView):
         serializers = SongSerializer(song, many=True)
         return Response(serializers.data)
 
+    def post(self, request):
+        serializers = SongSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
